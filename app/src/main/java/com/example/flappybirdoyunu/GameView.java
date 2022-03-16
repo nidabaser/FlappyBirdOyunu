@@ -34,8 +34,8 @@ public class GameView extends View {
         r = new Runnable() {
             @Override
             public void run() {
-                invalidate();       //to update method draw
-            }
+                invalidate();
+            } //to update method draw
         };
     }
 
@@ -48,7 +48,7 @@ public class GameView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN){
-            bird.setDrop(-15);
+            bird.setDrop(-15);   //Düşerken dokununca ne kadar yükselecek
         }
         return true;
     }
