@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -42,5 +43,13 @@ public class GameView extends View {
         super.draw(kanvas);
         bird.draw(kanvas);
         handler.postDelayed(r,10);   //Update every 0.01 seconds
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
+            bird.setDrop(-15);
+        }
+        return true;
     }
 }

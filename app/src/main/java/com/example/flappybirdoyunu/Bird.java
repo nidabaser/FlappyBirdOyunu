@@ -9,15 +9,23 @@ public class Bird extends BaseObject{
     private ArrayList<Bitmap> arrBms = new ArrayList<>();
     private int sayac, vFlap, idSuandakiBitmap;
     //Her tekrarda sayac bir artacak. Eğer sayac eşitse vflap o zaman kuşun bitmap ı değişecek
+    private float drop;
 
     public Bird(){
         this.sayac = 0;
         this.vFlap = 5;
         this.idSuandakiBitmap = 0;
+        this.drop = 0;
     }
 
     public void draw(Canvas kanvas){
+        drop();
         kanvas.drawBitmap(this.getBm(), this.x, this.y, null);
+    }
+
+    private void drop() {   //Kuşun serbest düşmesi ve yükselmesi
+        this.drop += 0.6;
+        this.y+=this.drop;
     }
 
     public ArrayList<Bitmap> getArrBms() {
@@ -51,5 +59,14 @@ public class Bird extends BaseObject{
             //return this.getArrBms().get(0);
         }
 
+    public float getDrop() {
+        return drop;
     }
+
+    public void setDrop(float drop) {
+        this.drop = drop;
+    }
+}
+
+
 
