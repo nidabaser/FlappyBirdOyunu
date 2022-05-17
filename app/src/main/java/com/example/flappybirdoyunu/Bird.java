@@ -2,13 +2,13 @@ package com.example.flappybirdoyunu;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 import java.util.ArrayList;
 
 public class Bird extends BaseObject{
     private ArrayList<Bitmap> arrBms = new ArrayList<>();
     private int sayac, vFlap, idSuandakiBitmap;
-    //Her tekrarda sayac bir artacak. Eğer sayac eşitse vflap o zaman kuşun bitmap ı değişecek
     private float drop;
 
     public Bird(){
@@ -18,12 +18,21 @@ public class Bird extends BaseObject{
         this.drop = 0;
     }
 
+    //
+    //
+    @Override
+    public Rect getRect() {
+        return new Rect((int)this.x+20, (int)this.y+20, (int)this.x+this.width-10, (int)this.y+this.height-10);
+    }
+    //
+    //
+
     public void draw(Canvas kanvas){
         drop();
         kanvas.drawBitmap(this.getBm(), this.x, this.y, null);
     }
 
-    private void drop() {   //Kuşun serbest düşmesi ve yükselmesi
+    private void drop() {
         this.drop += 0.7;
         this.y+=this.drop;
     }
@@ -32,12 +41,13 @@ public class Bird extends BaseObject{
         return arrBms;
     }
 
-    public void setArrBms(ArrayList<Bitmap> arrBms) { //Kuşun genişlik ve yüksekliğine göre bitmap ölçeklendirme
+    public void setArrBms(ArrayList<Bitmap> arrBms) {
         this.arrBms = arrBms;
         for (int i = 0; i < arrBms.size(); i++) {
             this.arrBms.set(i, Bitmap.createScaledBitmap(this.arrBms.get(i), this.width, this.height, true));
         }
     }
+
 
         @Override
         public Bitmap getBm() {
@@ -52,11 +62,10 @@ public class Bird extends BaseObject{
                         break;
                     }
                 }
-                sayac=0; //Döngüye sokmak için sürekli kuş resimleri dönmesi için sıfırlıyoruz.
+                sayac=0;
 
             }
             return this.arrBms.get(idSuandakiBitmap);
-            //return this.getArrBms().get(0);
         }
 
     public float getDrop() {

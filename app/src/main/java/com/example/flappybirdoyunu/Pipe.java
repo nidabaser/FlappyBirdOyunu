@@ -2,6 +2,8 @@ package com.example.flappybirdoyunu;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
+
 import java.util.Random;
 
 public class Pipe extends BaseObject{
@@ -12,6 +14,15 @@ public class Pipe extends BaseObject{
         super(x,y,width,height);
         speed=10*Constants.SCREEN_WIDTH/1080;
     }
+
+    //
+    //
+    @Override
+    public Rect getRect() {
+        return new Rect((int)this.x+10, (int)this.y, (int)this.x+this.width-10, (int)this.y+this.height);
+    }
+    //
+    //
 
     public void draw(Canvas canvas){
         this.x -= speed;

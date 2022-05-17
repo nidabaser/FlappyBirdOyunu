@@ -5,6 +5,12 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -21,6 +27,10 @@ public class GameView extends View {
     private int score, bestScore = 0;
     private boolean start;
     private Context context;
+    private int soundJump;
+    private float volume;
+    private boolean loadedSound;
+    private SoundPool soundPool;
 
     public GameView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -42,11 +52,29 @@ public class GameView extends View {
             }
         };
 
+        if(Build.VERSION.SDK_INT>=21){
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_GAME)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            SoundPool.Builder builder = new SoundPool.Builder();
+            builder.setAudioAttributes(audioAttributes).setMaxStreams(5);
+            this.soundPool = builder.build();
+        }else{
+            soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC,0);
+        }
+        this.soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                loadedSound = true;
+            }
+        });
+        soundJump = this.soundPool.load(context, R.raw.jump_02, 1);
     }
 
     private void initPipe() {
         topBoru = 6;
-        mesafe = 350*Constants.SCREEN_HEIGHT/1920;
+        mesafe = 425*Constants.SCREEN_HEIGHT/1920;
         arrPipes = new ArrayList<>();
         for(int i = 0; i < topBoru; i++){
             if(i<topBoru/2){
@@ -117,13 +145,28 @@ public class GameView extends View {
             }
             bird.draw(kanvas);
         }
-        handler.postDelayed(r,10);   //Update every 0.01 seconds
+        //
+        //
+        /*
+        Paint paint = new Paint();
+        paint.setColor(Color.BLUE);
+        kanvas.drawRect(bird.getRect(), paint);
+        for (int i = 0; i < arrPipes.size(); i++){
+            kanvas.drawRect(arrPipes.get(i).getRect(), paint);
+        }
+         */
+        //
+        //
+        handler.postDelayed(r,10);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN){
-            bird.setDrop(-15);   //Düşerken dokununca ne kadar yükselecek
+            bird.setDrop(-15);
+            if(loadedSound){
+                int streamId = this.soundPool.play(this.soundJump, (float)0.5, (float)0.5, 1, 0, 1f);
+            }
         }
         return true;
     }

@@ -59,7 +59,7 @@ public class BaseObject {
         this.bm = bm;
     }
 
-    public Rect getRect() {//Çarpmayı tespit etmek için, parametreler int olmak zorunda
+    public Rect getRect() {
         return new Rect((int)this.x,(int)this.y,(int)this.x+this.width,(int)this.y+this.height);
     }
 
