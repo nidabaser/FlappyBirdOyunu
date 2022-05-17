@@ -24,7 +24,7 @@ public class Bird extends BaseObject{
     }
 
     private void drop() {   //Kuşun serbest düşmesi ve yükselmesi
-        this.drop += 0.6;
+        this.drop += 0.7;
         this.y+=this.drop;
     }
 
@@ -32,7 +32,7 @@ public class Bird extends BaseObject{
         return arrBms;
     }
 
-    public void setArrBms(ArrayList<Bitmap> arrBms) {
+    public void setArrBms(ArrayList<Bitmap> arrBms) { //Kuşun genişlik ve yüksekliğine göre bitmap ölçeklendirme
         this.arrBms = arrBms;
         for (int i = 0; i < arrBms.size(); i++) {
             this.arrBms.set(i, Bitmap.createScaledBitmap(this.arrBms.get(i), this.width, this.height, true));
@@ -42,7 +42,7 @@ public class Bird extends BaseObject{
         @Override
         public Bitmap getBm() {
             sayac++;
-            if(sayac==vFlap){
+            if(this.sayac==this.vFlap){
                 for(int i=0;i<arrBms.size();i++){
                     if(i == arrBms.size()-1){
                         idSuandakiBitmap = 0;
@@ -52,7 +52,7 @@ public class Bird extends BaseObject{
                         break;
                     }
                 }
-                sayac=0; //Döngüye sokmak için sürekli kuş resimleri dönmesi için
+                sayac=0; //Döngüye sokmak için sürekli kuş resimleri dönmesi için sıfırlıyoruz.
 
             }
             return this.arrBms.get(idSuandakiBitmap);
